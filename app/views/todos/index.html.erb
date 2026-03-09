@@ -1,22 +1,38 @@
-<div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold text-gray-800">My Todo List 📝</h1>
-    <%= link_to "New Todo", new_todo_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition" %>
+<div class="max-w-3xl mx-auto mt-8 p-4">
+  <p style="color: green"><%= notice %></p>
+
+  <div class="flex items-center justify-between mb-5">
+    <h1 class="text-5xl font-bold text-slate-800">My Tasks 📝</h1>
+    <%= link_to "+ New Task", new_todo_path, class: "bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg" %>
   </div>
 
-  <div id="todos" class="space-y-4">
+  <div id="todos" class="space-y-3">
     <% @todos.each do |todo| %>
-      <div class="flex items-center justify-between p-4 border-b border-gray-100 hover:bg-gray-50 rounded-md transition">
-        <div>
-          <h2 class="text-xl font-semibold <%= todo.completed ? 'line-through text-gray-400' : 'text-gray-700' %>">
-            <%= todo.title %>
-          </h2>
-          <p class="text-gray-500 text-sm"><%= todo.description %></p>
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm px-4 py-3 flex items-center justify-between gap-4">
+        <div class="flex items-start gap-3 min-w-0 flex-1">
+          <%= form_with model: todo, class: "pt-1" do |form| %>
+            <%= form.checkbox :completed,
+              class: "h-5 w-5 rounded border-slate-300 text-slate-500 focus:ring-slate-400",
+              onchange: "this.form.requestSubmit()" %>
+          <% end %>
+
+          <div class="min-w-0">
+            <h2 class="text-3xl font-semibold truncate <%= todo.completed ? 'line-through text-slate-400' : 'text-slate-900' %>">
+              <%= link_to todo.title, todo_path(todo), class: "hover:underline" %>
+            </h2>
+            <p class="text-2xl text-slate-700 truncate <%= todo.completed ? 'text-slate-400' : '' %>">
+              <%= todo.description %>
+            </p>
+          </div>
         </div>
-        
-        <div class="flex space-x-2">
-          <%= link_to "Edit", edit_todo_path(todo), class: "text-indigo-600 hover:text-indigo-800 font-medium" %>
-          <%= button_to "Delete", todo, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-500 hover:text-red-700" %>
+
+        <p class="text-xs text-slate-500 whitespace-nowrap">
+          Updated: <%= todo.updated_at.strftime("%B %-d, %Y at %-I:%M %p") %>
+        </p>
+
+        <div class="flex items-center gap-2 whitespace-nowrap">
+          <%= link_to "Edit", edit_todo_path(todo), class: "border border-slate-400 text-slate-600 hover:bg-slate-50 text-sm font-medium py-1 px-3 rounded-lg" %>
+          <%= button_to "Delete", todo, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "border border-red-400 text-red-600 hover:bg-red-50 text-sm font-medium py-1 px-3 rounded-lg" %>
         </div>
       </div>
     <% end %>
