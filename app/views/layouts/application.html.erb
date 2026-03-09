@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Todo List</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application" %>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="container-nav">
+        <a href="/">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          Todo List
+        </a>
+      </div>
+    </nav>
+    <div class="container">
+      <% if notice.present? %>
+        <div class="alert alert-success">
+          <span><%= notice %></span>
+          <button class="btn-close" onclick="this.parentElement.remove()">&#x2715;</button>
+        </div>
+      <% end %>
+      <%= yield %>
+    </div>
+  </body>
+</html>
